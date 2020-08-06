@@ -30,6 +30,10 @@ public class Line extends BaseEntity {
     public Line() {
     }
 
+    public Line(int lineFare) {
+        this.lineFare = lineFare;
+    }
+
     public Line(String name, String color, LocalTime startTime, LocalTime endTime, int intervalTime, int lineFare) {
         this.name = name;
         this.color = color;
@@ -81,6 +85,10 @@ public class Line extends BaseEntity {
 
     public int getIntervalTime() {
         return intervalTime;
+    }
+
+    public int getLineFare() {
+        return lineFare;
     }
 
     public LineStations getLineStations() {
