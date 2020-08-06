@@ -72,11 +72,11 @@ public class PathAcceptanceTest extends AcceptanceTest {
     @Test
     void distanceFareTest() {
         //when
-        ExtractableResponse<Response> response1 = 거리_경로_조회_요청("DURATION", 2L, 6L);
-        ExtractableResponse<Response> response2 = 거리_경로_조회_요청("DURATION", 1L, 6L);
-        ExtractableResponse<Response> response3 = 거리_경로_조회_요청("DURATION", 3L, 5L);
-        ExtractableResponse<Response> response4 = 거리_경로_조회_요청("DURATION", 2L, 5L);
-        ExtractableResponse<Response> response5 = 거리_경로_조회_요청("DURATION", 2L, 7L);
+        ExtractableResponse<Response> response1 = 거리_경로_조회_요청("DISTANCE", 2L, 6L);
+        ExtractableResponse<Response> response2 = 거리_경로_조회_요청("DISTANCE", 1L, 6L);
+        ExtractableResponse<Response> response3 = 거리_경로_조회_요청("DISTANCE", 3L, 5L);
+        ExtractableResponse<Response> response4 = 거리_경로_조회_요청("DISTANCE", 2L, 5L);
+        ExtractableResponse<Response> response5 = 거리_경로_조회_요청("DISTANCE", 2L, 7L);
 
         //then
         적절한_경로를_응답(response1, Lists.newArrayList(강남역, 오목교역));

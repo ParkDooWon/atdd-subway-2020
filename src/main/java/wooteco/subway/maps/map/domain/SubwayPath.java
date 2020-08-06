@@ -13,6 +13,7 @@ public class SubwayPath {
     public static final int DIVIDE_UNIT_50KM = 8;
     private static final int BASIC_FARE = 1250;
     private static final int MAXIMUM_FARE_UNDER_50KM = 2050;
+    public static final int NO_EXTRA_FARE = 0;
 
     private List<LineStationEdge> lineStationEdges;
 
@@ -58,13 +59,9 @@ public class SubwayPath {
     }
 
     private int calculateOverFare(int overDistance, int divideUnit) {
+        if (overDistance == NO_EXTRA_FARE) {
+            return NO_EXTRA_FARE;
+        }
         return (overDistance - 1) / divideUnit + 1;
-    }
-
-    public List<Long> extractLineIds() {
-        return lineStationEdges.stream()
-            .map(LineStationEdge::getLineId)
-            .distinct()
-            .collect(Collectors.toList());
     }
 }

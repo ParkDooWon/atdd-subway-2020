@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import wooteco.subway.common.domain.BaseEntity;
+import wooteco.subway.maps.station.domain.Station;
 
 @Entity
 public class Line extends BaseEntity {
@@ -61,6 +62,10 @@ public class Line extends BaseEntity {
 
     public List<LineStation> getStationInOrder() {
         return lineStations.getStationsInOrder();
+    }
+
+    public boolean isContain(List<Station> stations) {
+        return lineStations.isContain(stations);
     }
 
     public Long getId() {

@@ -1,9 +1,16 @@
 package wooteco.subway.maps.line.domain;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
+import wooteco.subway.maps.station.domain.Station;
 
 @Embeddable
 public class LineStations {
@@ -56,14 +63,19 @@ public class LineStations {
     public void removeByStationId(Long stationId) {
         LineStation lineStation = lineStations.stream()
                 .filter(it -> it.getStationId() == stationId)
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
 
         lineStations.stream()
-                .filter(it -> it.getPreStationId() == stationId)
-                .findFirst()
-                .ifPresent(it -> it.updatePreStationTo(lineStation.getPreStationId()));
+            .filter(it -> it.getPreStationId() == stationId)
+            .findFirst()
+            .ifPresent(it -> it.updatePreStationTo(lineStation.getPreStationId()));
 
         lineStations.remove(lineStation);
+    }
+
+    public boolean isContain(List<Station> stations) {
+        return lineStations.stream()
+            .anyMatch(lineStation -> lineStation.isContain(stations));
     }
 }

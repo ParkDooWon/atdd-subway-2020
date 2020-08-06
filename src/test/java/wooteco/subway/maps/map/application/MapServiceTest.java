@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,10 +81,15 @@ public class MapServiceTest {
 
     @Test
     void findPath() {
+        List<Station> stationList = Arrays.asList(
+            TestObjectUtils.createStation(1L, "교대역"),
+            TestObjectUtils.createStation(2L, "강남역"),
+            TestObjectUtils.createStation(3L, "양재역"),
+            TestObjectUtils.createStation(4L, "남부터미널역"));
         when(lineService.findLines()).thenReturn(lines);
         when(pathService.findPath(anyList(), anyLong(), anyLong(), any())).thenReturn(subwayPath);
-        when(stationService.findStationsByIds(anyList())).thenReturn(stations);
-        when(lineService.findLinesByIds(any())).thenReturn(lines);
+        when(stationService.findStationsByIdsToMap(anyList())).thenReturn(stations);
+        when(stationService.findStationsByIdsToList(anyList())).thenReturn(stationList);
 
         PathResponse pathResponse = mapService.findPath(new LoginMember(1L, "abc@naver.com", "pw", 0), 1L, 3L,
             PathType.DISTANCE);
@@ -96,7 +102,7 @@ public class MapServiceTest {
     @Test
     void findMap() {
         when(lineService.findLines()).thenReturn(lines);
-        when(stationService.findStationsByIds(anyList())).thenReturn(stations);
+        when(stationService.findStationsByIdsToMap(anyList())).thenReturn(stations);
 
         MapResponse mapResponse = mapService.findMap();
 

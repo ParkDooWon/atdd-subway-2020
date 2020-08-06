@@ -1,26 +1,25 @@
 package wooteco.subway.maps.line.application;
 
-import wooteco.subway.maps.line.domain.Line;
-import wooteco.subway.maps.line.domain.LineRepository;
-import wooteco.subway.maps.line.domain.LineStation;
-import wooteco.subway.maps.line.dto.LineResponse;
-import wooteco.subway.common.TestObjectUtils;
-import wooteco.subway.maps.station.application.StationService;
-import wooteco.subway.maps.station.domain.Station;
-import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import wooteco.subway.common.TestObjectUtils;
+import wooteco.subway.maps.line.domain.Line;
+import wooteco.subway.maps.line.domain.LineRepository;
+import wooteco.subway.maps.line.domain.LineStation;
+import wooteco.subway.maps.line.dto.LineResponse;
+import wooteco.subway.maps.station.application.StationService;
+import wooteco.subway.maps.station.domain.Station;
 
 public class LineServiceTest {
     private Map<Long, Station> stations;
@@ -45,7 +44,7 @@ public class LineServiceTest {
         LineService lineService = new LineService(lineRepository, stationService);
 
         when(lineRepository.findById(anyLong())).thenReturn(Optional.of(line));
-        when(stationService.findStationsByIds(anyList())).thenReturn(stations);
+        when(stationService.findStationsByIdsToMap(anyList())).thenReturn(stations);
 
         LineResponse result = lineService.findLineResponsesById(line.getId());
 

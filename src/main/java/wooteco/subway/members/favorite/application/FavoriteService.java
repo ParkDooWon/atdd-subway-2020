@@ -1,6 +1,13 @@
 package wooteco.subway.members.favorite.application;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import wooteco.subway.maps.station.application.StationService;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
@@ -9,12 +16,6 @@ import wooteco.subway.members.favorite.domain.FavoriteRepository;
 import wooteco.subway.members.favorite.dto.FavoriteRequest;
 import wooteco.subway.members.favorite.dto.FavoriteResponse;
 import wooteco.subway.members.member.domain.LoginMember;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -54,7 +55,7 @@ public class FavoriteService {
 
     private Map<Long, Station> extractStations(List<Favorite> favorites) {
         List<Long> stationIds = extractStationIds(favorites);
-        return stationService.findStationsByIds(stationIds);
+        return stationService.findStationsByIdsToMap(stationIds);
     }
 
     private List<Long> extractStationIds(List<Favorite> favorites) {

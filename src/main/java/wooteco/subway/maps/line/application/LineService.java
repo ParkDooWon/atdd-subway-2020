@@ -63,7 +63,7 @@ public class LineService {
                 .map(it -> it.getStationId())
                 .collect(Collectors.toList());
 
-        Map<Long, Station> stations = stationService.findStationsByIds(stationIds);
+        Map<Long, Station> stations = stationService.findStationsByIdsToMap(stationIds);
 
         List<LineStationResponse> lineStationResponses = extractLineStationResponses(line, stations);
 

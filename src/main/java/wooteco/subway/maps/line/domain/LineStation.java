@@ -1,7 +1,16 @@
 package wooteco.subway.maps.line.domain;
 
-import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import wooteco.subway.maps.station.domain.Station;
 
 @Entity
 @Table
@@ -27,6 +36,11 @@ public class LineStation {
 
     public boolean isSame(LineStation newLineStation) {
         return Objects.equals(this.stationId, newLineStation.stationId);
+    }
+
+    public boolean isContain(List<Station> stations) {
+        return stations.stream()
+            .anyMatch(station -> station.getId().equals(stationId));
     }
 
     public Long getStationId() {

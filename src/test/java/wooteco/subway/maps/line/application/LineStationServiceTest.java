@@ -1,12 +1,12 @@
 package wooteco.subway.maps.line.application;
 
-import com.google.common.collect.Maps;
-import wooteco.subway.maps.line.domain.Line;
-import wooteco.subway.maps.line.domain.LineStation;
-import wooteco.subway.maps.line.dto.LineStationCreateRequest;
-import wooteco.subway.common.TestObjectUtils;
-import wooteco.subway.maps.station.application.StationService;
-import wooteco.subway.maps.station.domain.Station;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,14 +15,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import com.google.common.collect.Maps;
+import wooteco.subway.common.TestObjectUtils;
+import wooteco.subway.maps.line.domain.Line;
+import wooteco.subway.maps.line.domain.LineStation;
+import wooteco.subway.maps.line.dto.LineStationCreateRequest;
+import wooteco.subway.maps.station.application.StationService;
+import wooteco.subway.maps.station.domain.Station;
 
 @DisplayName("지하철 노선 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -47,8 +46,8 @@ public class LineStationServiceTest {
         Station station2 = TestObjectUtils.createStation(2L, "양재역");
         Map<Long, Station> stations = new HashMap<>();
         stations.put(1L, station1);
-        stations.put(2L, station2);
-        when(stationService.findStationsByIds(anyList())).thenReturn(stations);
+		stations.put(2L, station2);
+		when(stationService.findStationsByIdsToMap(anyList())).thenReturn(stations);
 
         Line line = TestObjectUtils.createLine(1L, "신분당선", "RED");
         when(lineService.findLineById(anyLong())).thenReturn(line);
@@ -66,8 +65,8 @@ public class LineStationServiceTest {
     void addLineStation2() {
         // given
         Station station = new Station();
-        ReflectionTestUtils.setField(station, "id", 1L);
-        when(stationService.findStationsByIds(anyList())).thenReturn(Maps.newHashMap());
+		ReflectionTestUtils.setField(station, "id", 1L);
+		when(stationService.findStationsByIdsToMap(anyList())).thenReturn(Maps.newHashMap());
 
         // when
         LineStationCreateRequest request = new LineStationCreateRequest(1L, null, 10, 10);

@@ -48,19 +48,22 @@ public class MapService {
     public PathResponse findPath(LoginMember loginMember, Long source, Long target, PathType type) {
         List<Line> lines = lineService.findLines();
         SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
-        Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
 
-        int lineFare = calculateLineFare(subwayPath);
+        List<Long> ids = subwayPath.extractStationId();
+        Map<Long, Station> stations = stationService.findStationsByIdsToMap(ids);
+
+        int lineFare = calculateLineFare(lines, ids);
 
         return PathResponseAssembler.assemble(subwayPath, stations, loginMember, lineFare);
     }
 
-    private int calculateLineFare(SubwayPath subwayPath) {
-        List<Line> linesInSubwayPath = lineService.findLinesByIds(subwayPath.extractLineIds());
-        return linesInSubwayPath.stream()
-            .mapToInt(Line::getLineFare)
+    private int calculateLineFare(List<Line> lines, List<Long> ids) {
+        List<Station> stations = stationService.findStationsByIdsToList(ids);
+        return lines.stream()
+            .filter(line -> line.isContain(stations))
+            .mapToInt(line -> line.getLineFare())
             .max()
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(IllegalAccessError::new);
     }
 
     private Map<Long, Station> findStations(List<Line> lines) {
@@ -69,7 +72,7 @@ public class MapService {
             .map(it -> it.getStationId())
             .collect(Collectors.toList());
 
-        return stationService.findStationsByIds(stationIds);
+        return stationService.findStationsByIdsToMap(stationIds);
     }
 
     private List<LineStationResponse> extractLineStationResponses(Line line, Map<Long, Station> stations) {
