@@ -50,9 +50,9 @@ public class PathAcceptanceTest extends AcceptanceTest {
         오목교역 = 지하철역_등록되어_있음("오목교역");
         신정역 = 지하철역_등록되어_있음("신정역");
 
-        이호선 = 지하철_노선_등록되어_있음("2호선", "GREEN");
-        신분당선 = 지하철_노선_등록되어_있음("신분당선", "RED");
-        삼호선 = 지하철_노선_등록되어_있음("3호선", "ORANGE");
+        이호선 = 지하철_노선_등록되어_있음("2호선", "GREEN", "200");
+        신분당선 = 지하철_노선_등록되어_있음("신분당선", "RED", "100");
+        삼호선 = 지하철_노선_등록되어_있음("3호선", "ORANGE", "300");
 
         지하철_노선에_지하철역_등록되어_있음(이호선, null, 교대역, 0, 0);
         지하철_노선에_지하철역_등록되어_있음(이호선, 교대역, 강남역, 2, 2);
@@ -81,23 +81,23 @@ public class PathAcceptanceTest extends AcceptanceTest {
         //then
         적절한_경로를_응답(response1, Lists.newArrayList(강남역, 오목교역));
         총_거리와_소요_시간을_함께_응답함(response1, 10, 5);
-        validateFare(response1, 1250);
+        validateFare(response1, 1450);
 
         적절한_경로를_응답(response2, Lists.newArrayList(교대역, 강남역, 오목교역));
         총_거리와_소요_시간을_함께_응답함(response2, 12, 7);
-        validateFare(response2, 1350);
+        validateFare(response2, 1650);
 
         적절한_경로를_응답(response3, Lists.newArrayList(양재역, 목동역));
         총_거리와_소요_시간을_함께_응답함(response3, 50, 10);
-        validateFare(response3, 2050);
+        validateFare(response3, 2350);
 
         적절한_경로를_응답(response4, Lists.newArrayList(강남역, 양재역, 목동역));
         총_거리와_소요_시간을_함께_응답함(response4, 52, 11);
-        validateFare(response4, 2150);
+        validateFare(response4, 2450);
 
         적절한_경로를_응답(response5, Lists.newArrayList(강남역, 양재역, 목동역, 신정역));
         총_거리와_소요_시간을_함께_응답함(response5, 62, 18);
-        validateFare(response5, 2250);
+        validateFare(response5, 2550);
     }
 
     @DisplayName("두 역의 최단 거리 경로를 조회한다.")
@@ -111,7 +111,6 @@ public class PathAcceptanceTest extends AcceptanceTest {
         총_거리와_소요_시간을_함께_응답함(response, 3, 4);
     }
 
-
     @DisplayName("두 역의 최소 시간 경로를 조회한다.")
     @Test
     void findPathByDuration() {
@@ -122,8 +121,8 @@ public class PathAcceptanceTest extends AcceptanceTest {
         총_거리와_소요_시간을_함께_응답함(response, 4, 3);
     }
 
-    private Long 지하철_노선_등록되어_있음(String name, String color) {
-        ExtractableResponse<Response> createLineResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음(name, color);
+    private Long 지하철_노선_등록되어_있음(String name, String color, String fare) {
+        ExtractableResponse<Response> createLineResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음(name, color, fare);
         return createLineResponse1.as(LineResponse.class).getId();
     }
 

@@ -1,5 +1,13 @@
 package wooteco.subway.maps.line.application;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import wooteco.subway.maps.line.domain.Line;
 import wooteco.subway.maps.line.domain.LineRepository;
 import wooteco.subway.maps.line.dto.LineRequest;
@@ -8,12 +16,6 @@ import wooteco.subway.maps.line.dto.LineStationResponse;
 import wooteco.subway.maps.station.application.StationService;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -70,7 +72,11 @@ public class LineService {
 
     private List<LineStationResponse> extractLineStationResponses(Line line, Map<Long, Station> stations) {
         return line.getStationInOrder().stream()
-                .map(it -> LineStationResponse.of(line.getId(), it, StationResponse.of(stations.get(it.getStationId()))))
-                .collect(Collectors.toList());
+            .map(it -> LineStationResponse.of(line.getId(), it, StationResponse.of(stations.get(it.getStationId()))))
+            .collect(Collectors.toList());
+    }
+
+    public List<Line> findLinesByIds(List<Long> lineIds) {
+        return new ArrayList<>(lineRepository.findAllById(lineIds));
     }
 }

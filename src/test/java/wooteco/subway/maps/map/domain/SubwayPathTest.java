@@ -7,10 +7,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import wooteco.subway.maps.line.domain.Line;
 import wooteco.subway.maps.line.domain.LineStation;
+import wooteco.subway.members.member.domain.LoginMember;
 
 public class SubwayPathTest {
 	private Line line1 = new Line(200);
@@ -34,11 +36,15 @@ public class SubwayPathTest {
 	}
 
 	@DisplayName("지하철 경로의 요금을 계산한다.")
-	@Test
-	void calculateFareByDistanceTest() {
+	@ParameterizedTest
+	@CsvSource({"6, 1250", "12, 1250", "13, 2000", "18, 2000", "19, 2850"})
+	void calculateFareByDistanceTest(int age, int expected) {
 		SubwayPath subwayPath = new SubwayPath(lineStationEdges);
 		int moreExpensiveLineFare = Math.max(line1.getLineFare(), line2.getLineFare());
 
-		assertThat(subwayPath.calculateFare(moreExpensiveLineFare)).isEqualTo(2850);
+		LoginMember loginMember = new LoginMember(1L, "email@naver.com", "password", age);
+
+		int totalMoney = loginMember.discountFare(subwayPath.calculateFare(moreExpensiveLineFare));
+		assertThat(totalMoney).isEqualTo(expected);
 	}
 }

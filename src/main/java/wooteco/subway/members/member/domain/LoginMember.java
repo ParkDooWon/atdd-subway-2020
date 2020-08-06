@@ -57,13 +57,11 @@ public class LoginMember implements UserDetails {
     }
 
     public int discountFare(int fare) {
-        if (age == 0 || age > 20) {
+        if (age == 0 || age >= 19) {
             return fare;
-        }
-        if (age > 13) {
+        } else if (age >= 13) {
             return (fare - 350) * 80 / 100;
-        }
-        if (age > 6) {
+        } else if (age >= 6) {
             return (fare - 350) * 50 / 100;
         }
         return 0;

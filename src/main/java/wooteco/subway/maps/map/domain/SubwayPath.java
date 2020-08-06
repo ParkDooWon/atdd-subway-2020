@@ -60,4 +60,11 @@ public class SubwayPath {
     private int calculateOverFare(int overDistance, int divideUnit) {
         return (overDistance - 1) / divideUnit + 1;
     }
+
+    public List<Long> extractLineIds() {
+        return lineStationEdges.stream()
+            .map(LineStationEdge::getLineId)
+            .distinct()
+            .collect(Collectors.toList());
+    }
 }
